@@ -26,13 +26,14 @@ class Post(models.Model):
         Group,
         blank=True,
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        related_name='posts',
     )
-
-    def __str__(self):
-        return self.text
 
     class Meta:
         # verbose_name = _('Post')
         # verbose_name_plural = _('All posts')
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.text
