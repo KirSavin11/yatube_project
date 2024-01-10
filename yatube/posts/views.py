@@ -4,7 +4,9 @@ from django.core.paginator import Paginator
 
 from django.contrib.auth.decorators import login_required
 
-from .models import Post, Group
+from .models import Post, Group, get_user_model
+
+User = get_user_model()
 
 
 def index(request):
@@ -35,5 +37,32 @@ def group_posts(request, slug):
         'text': text,
         'group': group,
         'page_obj': page_obj,
+    }
+    return render(request, template, context)
+
+
+def profile(request, username):
+    template = 'posts/profile.html'
+    name = User.objects.get(username=username)
+    posts_list = Post.objects.filter(author=name)
+    post_count = Post.objects.filter(author=name).count()
+    context = {
+        'username': username,
+        'full_name': name,
+        'posts_list': posts_list,
+        'post_count': post_count,
+    }
+    return render(request, template, context)
+
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post_count = Post.objects.filter(author=post.author).count()
+    template = 'posts/post_detail.html'
+    context = {
+        'post': post,
+        'post_author': post.author,
+        'post_group': post.group,
+        'post_count': post_count,
     }
     return render(request, template, context)
