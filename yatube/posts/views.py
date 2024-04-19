@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Post, Group, get_user_model
 
+from .forms import PostForm
+
 User = get_user_model()
 
 
@@ -65,4 +67,12 @@ def post_detail(request, post_id):
         'post_group': post.group,
         'post_count': post_count,
     }
+    return render(request, template, context)
+
+
+@login_required
+def post_create(request):
+    form = PostForm
+    template = 'posts/create_post.html'
+    context = {'form': form}
     return render(request, template, context)
