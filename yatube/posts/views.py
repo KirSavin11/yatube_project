@@ -80,3 +80,17 @@ def post_create(request):
         'form': form,
     }
     return render(request, template, context)
+
+
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    template = 'posts/create_post.html'
+    if post.author == request.user:
+        form = PostForm(request.POST or None, instance=post)
+        if form.is_valid():
+            post.save()
+            return redirect('posts:post_detail', post_id)
+        context = {'form': form}
+        return render(request, template, context)
+    return redirect('posts:post_detail', post_id)
