@@ -22,7 +22,6 @@ def index(request):
     return render(request, template, context)
 
 
-@login_required
 def group_posts(request, slug):
     text = 'Записи сообщества'
     template = 'posts/group_list.html'
@@ -82,7 +81,6 @@ def post_create(request):
     return render(request, template, context)
 
 
-@login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     template = 'posts/create_post.html'
