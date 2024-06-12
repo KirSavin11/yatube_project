@@ -28,7 +28,7 @@
                     {% endfor %}
                   {% endfor %}
                 {% endif %}
-                <form method="post" action="{% url 'posts:post_create' %}">
+                <form method="post" enctype="multipart/form-data" action="{% url 'posts:post_create' %}">
                   {% csrf_token %}
 
                   <div class="form-group row my-3 p-3">
@@ -53,6 +53,13 @@
                     <small id="{{ form.group.id_for_label }}" class="form-text text-muted">
                       Группа, к которой будет относиться пост
                     </small>
+                  </div>
+                  <div class="form-group row my-3 p-3">
+                    <label for="id_image">
+                      Добавить картинку
+                    </label>
+                    <input type="file" name="image"
+                    accept="image/" class="form-control" id="id_image">
                   </div>
                   <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">
