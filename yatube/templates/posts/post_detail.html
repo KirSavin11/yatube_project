@@ -41,11 +41,11 @@
           </p>
           {% if user.is_authenticated %}
             <div class="card my-4">
-              <h5 class="card-header">Добавить комментарий:</h5>
+              <h6 class="card-header">Добавить комментарий:</h6>
               <div class="card-body">
                 <form method="post" action="{% url 'posts:add_comment' post.id %}">
                   {% csrf_token %}      
-                  <div class="form-group mb-2">
+                  <div class="form-group">
                     {{ form.text|addclass:"form-control" }}
                   </div>
                   <button type="submit" class="btn btn-primary">Отправить</button>
@@ -65,6 +65,7 @@
                   <p>
                   {{ comment.text }}
                   </p>
+                  <h7> {{ comment.pub_date|date:"d E Y"}} </h7>
                 </div>
               </div>
           {% endfor %}
