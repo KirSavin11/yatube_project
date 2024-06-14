@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
+{% load cache %}
 {% block title %} {{ text }} {% endblock %}
 {% block content %}
   <div class="container py-5">     
     <h2>{{ text }}</h2>
     <br>
     <article>
+      {% cache 20 index_page page_obj.number %}
       {% for post in page_obj %}
         <ul>
           <li>
@@ -23,6 +25,7 @@
         </p>
         {% if not forloop.last %}<hr>{% endif %}
       {% endfor %}
+      {% endcache %}
       {% include 'includes/paginator.html' %}
     </article>
   </div>
