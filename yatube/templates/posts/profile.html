@@ -3,15 +3,27 @@
 {% block title %}Профиль пользователя{% endblock %}
 
 {% block content %}
-  <div class="container py-5">        
-    <h2>Все посты пользователя {{ username }}</h2>
-    <h4>Всего постов: {{ post_count }} </h4>   
+  <div class="container py-5">
+    <div class="mb-5">       
+      <h2>Все посты пользователя {{ username }}</h2>
+      <h4>Всего постов: {{ post_count }} </h4>
+      {% if user.is_authenticated %}
+          {% if following %}
+              <a class="btn btn-lg btn-light" 
+              href="{% url 'posts:profile_unfollow' author.username %}" 
+              role="button">Отписаться</a>
+          {% elif user.username != author.username %}
+              <a class="btn btn-lg btn-primary"
+              href="{% url 'posts:profile_follow' author.username %}"
+              role="button">Подписаться</a>
+          {% endif %}
+      {% endif %}
+    </div>
     <article>
       {% for post in posts_list %}
       <ul>
         <li>
           Автор: {{ post.author.get_full_name }}
-          <a href="">все посты пользователя</a>
         </li>
         <li>
           Дата публикации: {{ post.pub_date|date:"d E Y" }}
@@ -20,12 +32,14 @@
       <p>
         {{ post.text }}
       </p>
-      <a href="<!-- -->">подробная информация </a>
+      <a href="{% url 'posts:post_detail' post.id  %}">подробная информация </a>
       {% endfor %}
-    </article>       
-    <a href="<!-- -->">все записи группы</a>        
+    </article> 
+    {% if post.group %}      
+      <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
+    {% endif %}      
     <hr>
-    <!-- Остальные посты. после последнего нет черты -->
-    <!-- Здесь подключён паджинатор -->  
+    {% if not forloop.last %}<hr>{% endif %}
+    {% include 'includes/paginator.html' %} 
   </div>
 {% endblock %}
